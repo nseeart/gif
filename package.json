@@ -1,0 +1,22 @@
+{
+  "name": "vite-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@wizpanda/super-gif": "0.0.5",
+    "vue": "^3.2.6",
+    "xmp-js": "0.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.10",
+    "@vitejs/plugin-vue": "^1.6.0",
+    "@vue/compiler-sfc": "^3.2.6",
+    "typescript": "^4.3.2",
+    "vite": "^2.5.2",
+    "vue-tsc": "^0.2.2"
+  }
+}
