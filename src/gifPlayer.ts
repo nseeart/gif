@@ -1,5 +1,5 @@
 import { loadGif }  from './gifParser/utils';
-import { IPaser, Parser } from './gifParser/parser';
+import { Parser } from './gifParser/parser';
 
 export interface FrameData {
     delayTime: number;
@@ -12,19 +12,23 @@ export interface FrameData {
 };
 
 export type HTMLGifElement = HTMLDivElement | HTMLElement;
-export type ReadyCallback = (parser: IPaser) => void;
-export type UpdateCallback = (item: FrameData, frameIndex: number) => void;
+export type ReadyCallback = (parser: Parser) => void;
+export type FrameUpdateCallback = (item: FrameData, frameIndex: number) => void;
+export type StateUpdateCallback = ({ isPlay }: { isPlay: boolean}) => void;
+export type StepType = 'prev' | 'next';
 
 export default class GifPlayer {
     private width: number = 0;
     private height: number = 0;
     private readyCallback: ReadyCallback;
-    private updateCallback: UpdateCallback;
+    private frameUpdateCallback: FrameUpdateCallback;
+    private stateUpdateCallback: StateUpdateCallback;
     private container: HTMLGifElement | null = null;
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
     private isPlay: boolean = false;
     private currentPlayFrameIndex: number = 0;
+    private frames: Array<FrameData> = [];
     private frameAction: any = [];
     private isHover: boolean = false;
     private isPlayButtonDisplay: boolean = true;
@@ -32,7 +36,8 @@ export default class GifPlayer {
 
     constructor(private target: string | HTMLGifElement) {
         this.readyCallback = () => {};
-        this.updateCallback = () => {};
+        this.frameUpdateCallback = () => {};
+        this.stateUpdateCallback = () => {};
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
         this.container = this.getElement(target);
@@ -57,32 +62,57 @@ export default class GifPlayer {
             this.setSize(width, height);
             this.setCanvasStyle(this.canvas, width, height);
             parser.export();
-            const frames = parser.getFrames();
-            this.initFrame(frames[0]);
-            this.frameAction = this.createFrameAction(frames);
+            this.frames = parser.getFrames();
+            this.initFrame(this.frames[0]);
+            this.frameAction = this.createFrameAction(this.frames);
             this.readyCallback && this.readyCallback(parser);
+            this.stateUpdateCallback && this.stateUpdateCallback({ isPlay: !this.isPlay });
         });
     }
 
-    handleMouseenter(): void {
+    public handleMouseenter(): void {
         this.isPlayButtonDisplay = true;
         this.isHover = true;
         this.updatePlayButtonDisplay(this.playButton);
     }
 
-    handleMouseleave(): void {
+    public handleMouseleave(): void {
         this.isHover = false;
         this.updatePlayButtonDisplay(this.playButton);
     }
 
-    handleToggle(): void {
+    public handleToggle(): void {
         this.isPlay = !this.isPlay;
         if (this.isPlay) {
             this.isPlayButtonDisplay = false;
             this.updatePlayButtonDisplay(this.playButton);
         }
         this.buttonIcon(this.playButton);
-        this.play(); 
+        this.play();
+        this.stateUpdateCallback && this.stateUpdateCallback({ isPlay: !this.isPlay });
+    }
+
+    public moveTo(index: number) {
+        this.isPlay = false;
+        const item = this.frames[index];
+        this.renderFrame(item);
+        this.frameUpdateCallback && this.frameUpdateCallback(item, this.currentPlayFrameIndex);
+        this.stateUpdateCallback && this.stateUpdateCallback({ isPlay: !this.isPlay });
+    }
+
+    public step(type: StepType) {
+        if (type === 'prev') {
+            if (this.currentPlayFrameIndex === 0) {
+                this.currentPlayFrameIndex = this.frames.length;
+            } 
+            this.currentPlayFrameIndex --;
+        } else {
+            this.currentPlayFrameIndex ++;
+            if (this.currentPlayFrameIndex === this.frames.length) {
+                this.currentPlayFrameIndex = 0; 
+            }
+        }
+        this.moveTo(this.currentPlayFrameIndex);
     }
 
     private getElement(el: string | HTMLGifElement): HTMLGifElement | null {
@@ -117,7 +147,8 @@ export default class GifPlayer {
                     if (this.currentPlayFrameIndex === frames.length) {
                         this.currentPlayFrameIndex = 0;
                     }
-                    this.updateCallback && this.updateCallback(item, this.currentPlayFrameIndex)
+                    this.frameUpdateCallback && this.frameUpdateCallback(item, this.currentPlayFrameIndex);
+                    this.stateUpdateCallback && this.stateUpdateCallback({ isPlay: !this.isPlay });
                     clearTimeout(timer);
                     this.isPlay && play();
                 }, item.delayTime * 10);
@@ -158,8 +189,13 @@ export default class GifPlayer {
         );
     }
 
-    public update(updateCallback: UpdateCallback): this {
-        this.updateCallback = updateCallback;
+    public frameUpdate(frameUpdateCallback: FrameUpdateCallback): this {
+        this.frameUpdateCallback = frameUpdateCallback;
+        return this;
+    }
+
+    public stateUpdate(stateUpdateCallback: StateUpdateCallback): this {
+        this.stateUpdateCallback = stateUpdateCallback;
         return this;
     }
 
