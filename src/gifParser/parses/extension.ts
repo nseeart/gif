@@ -1,10 +1,10 @@
 
 import { Stream } from '../stream';
-import { GraphicsControlExtension, IGraphicsControlExtension, GraphicsControlExtensionExportData } from './graphicsControlExtension';
-import { CommentExtension, ICommentExtension, CommentExtensionExportData } from './commentExtension';
-import { PlainTextExtension, IPlainTextExtension, PlainTextExtensionExportData } from './plainTextExtension';
-import { ApplicationExtension, IApplicationExtension, ApplicationExtensionExportData } from './applicationExtension';
-import { UnknownExtension, IUnknownExtension, UnknownExtensionExportData } from './unknownExtension';
+import { GraphicsControlExtension, GraphicsControlExtensionExportData } from './graphicsControlExtension';
+import { CommentExtension, CommentExtensionExportData } from './commentExtension';
+import { PlainTextExtension, PlainTextExtensionExportData } from './plainTextExtension';
+import { ApplicationExtension, ApplicationExtensionExportData } from './applicationExtension';
+import { UnknownExtension, UnknownExtensionExportData } from './unknownExtension';
 import { ParseParam } from '../parse';
 
 export type ExtensionExportData = GraphicsControlExtensionExportData | CommentExtensionExportData | PlainTextExtensionExportData | ApplicationExtensionExportData | UnknownExtensionExportData;
@@ -16,11 +16,11 @@ export interface IExtension {
 
 export class Extension implements IExtension {
     private extensionBlock: ExtensionExportData = {} as ExtensionExportData;
-    private graphicsControlExtension: IGraphicsControlExtension;
-    private plainTextExtension: IPlainTextExtension;
-    private commentExtension: ICommentExtension;
-    private applicationExtension: IApplicationExtension;
-    private unknownExtension: IUnknownExtension;
+    private graphicsControlExtension: GraphicsControlExtension;
+    private plainTextExtension: PlainTextExtension;
+    private commentExtension: CommentExtension;
+    private applicationExtension: ApplicationExtension;
+    private unknownExtension: UnknownExtension;
     constructor(protected stream: Stream) {
         this.stream = stream;
         this.graphicsControlExtension = new GraphicsControlExtension(stream);

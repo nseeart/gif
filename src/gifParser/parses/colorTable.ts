@@ -1,14 +1,13 @@
 
 import { Stream } from "../stream";
-import { IParse, IData, ParseParam } from '../parse';
+import { IData, ParseParam } from '../parse';
 import { getBytes } from '../utils';
 
 export type ColorTableData = Array<any>
 
 export interface ColorTableExportData extends IData<ColorTableData> {}
-export interface IColorTable extends IParse<ColorTableData> {}
 
-export class ColorTable implements IColorTable {
+export class ColorTable {
     type: string = '';
     offset: number = 0;
     length: number = 0;

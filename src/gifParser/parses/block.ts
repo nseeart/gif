@@ -5,13 +5,11 @@ import { Extension, IExtension, ExtensionExportData } from "./extension";
 import { ImageData, IImageData } from "./imageData";
 import { ImageDescriptorData } from "./imageDescriptor";
 import { ImageContentData } from "./imageContent";
-import { GlobalColorTable } from './globalColorTable';
 import { ColorTableExportData } from "./colorTable";
 
 export type BlocksExportData = Array<ImageContentData | ImageDescriptorData | ExtensionExportData>;
-export interface IBlock extends IParses<BlocksExportData> {}
 
-export class Block implements IBlock {
+export class Block {
     type: string = 'Block';
     offset: number = 0;
     length: number = 0;

@@ -15,19 +15,13 @@ export type ImageDescriptorData = {
     reserved: Array<boolean>;
     localColorTableSize: number;
 }
-
 export type ImageDescriptorExportData = IData<ImageDescriptorData>
 
-export interface IImageDescriptor extends IParse<ImageDescriptorData> {
-    hasLocalColorTable(): boolean;
-    getLocalColorTableSize(): number;
-}
-
-export class ImageDescriptor implements IImageDescriptor {
-    type: string = 'ImageDescriptor';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+export class ImageDescriptor {
+    private type: string = 'ImageDescriptor';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private introducer: string = '';
     private left: number = 0;
     private top: number = 0;

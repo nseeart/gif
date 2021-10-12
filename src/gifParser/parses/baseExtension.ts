@@ -1,12 +1,6 @@
 
 import { Stream } from "../stream";
-import { IParse, IData, ParseParam } from '../parse';
-
-export interface BaseExtensionData {
-    blockSize: number;
-    identifier: string;
-    authCode: string;
-}
+import { ParseParam } from '../parse';
 
 export interface SubBlocks {
     blocks: Array<{
@@ -16,17 +10,8 @@ export interface SubBlocks {
     blocksLength: number;
 }
 
-export type BaseExtensionExportData = IData<BaseExtensionData>
-
-export interface IBaseExtension extends IParse<BaseExtensionData> {}
-
-export class BaseExtension implements IBaseExtension {
-    type: string = 'baseExtension';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+export class BaseExtension {
     protected stream: Stream;
-    
     constructor(stream: Stream) {
         this.stream = stream;
     }

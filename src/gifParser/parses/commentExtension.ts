@@ -1,7 +1,7 @@
 
 import { Stream } from "../stream";
 import { IParse, IData, ParseParam } from '../parse';
-import { byteToBitArr, bitsToNum, getBytes } from '../utils';
+import { getBytes } from '../utils';
 import { BaseExtension, SubBlocks } from "./baseExtension";
 
 export type Colors = Array<any>;
@@ -10,10 +10,11 @@ export type CommentExtensionData = SubBlocks;
 
 export type CommentExtensionExportData = IData<CommentExtensionData>
 
-export interface ICommentExtension extends IParse<CommentExtensionData> {}
-
 export class CommentExtension extends BaseExtension {
-    type: string = 'CommentExtension';
+    private type: string = 'CommentExtension';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private comment: SubBlocks = {} as SubBlocks;
     constructor(protected stream: Stream) {
         super(stream);

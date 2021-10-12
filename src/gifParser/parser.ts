@@ -32,17 +32,7 @@ export type ColorTable = Array<Array<number>>;
 export type IndexStream = Array<number>;
 export type FramesData = Array<FrameData>;
 
-export interface IPaser {
-    getBlockList(): ExportBlockList;
-    getDataList(): ExportBlockList;
-    parse(): void;
-    export(): void;
-    getData(type: string): ExportData;
-    getFrames(): FramesData;
-    getSize(): Array<number>;
-}
-
-export class Parser implements IPaser {
+export class Parser {
     private parsed: boolean;
     private blockList: ExportBlockList;
     private dataList: ExportBlockList;

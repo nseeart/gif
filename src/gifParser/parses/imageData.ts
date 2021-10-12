@@ -1,15 +1,15 @@
 
 import { Stream } from '../stream';
 import { LocalColorTable } from "./localColorTable";
-import { IColorTable } from './colorTable';
-import { IImageDescriptor, ImageDescriptor, ImageDescriptorExportData } from './imageDescriptor';
-import { IImageContent, ImageContent, ImageContentExportData } from './imageContent';
+import { ColorTable } from './colorTable';
+import { ImageDescriptor, ImageDescriptorExportData } from './imageDescriptor';
+import { ImageContent, ImageContentExportData } from './imageContent';
 import { ParseParam } from '../parse';
 import { ColorTableExportData } from './colorTable';
 
 export type ImageDataExportData = Array<ImageDescriptorExportData | ImageContentExportData>;
 
-type ColorTable = Array<Array<number>>;
+type ColorTableList = Array<Array<number>>;
 type ColorIndexStream = Array<number>;
 
 export interface IImageData {
@@ -19,9 +19,9 @@ export interface IImageData {
 }
 
 export class ImageData implements IImageData {
-    private localColorTable: IColorTable;
-    private imageDescriptor: IImageDescriptor;
-    private imageContent: IImageContent;
+    private localColorTable: ColorTable;
+    private imageDescriptor: ImageDescriptor;
+    private imageContent: ImageContent;
 
     constructor(private stream: Stream) {
         this.stream = stream;
@@ -38,29 +38,21 @@ export class ImageData implements IImageData {
             const size = 1 << (localColorTableSize + 1);
             this.localColorTable.parse({ size });
         }
-        this.imageContent.parse({ introducer });
+        this.imageContent.parse();
     }
 
-    createFrame(colorTable: ColorTable, cidx: ColorIndexStream, width: number, height: number) {
+    createFrame(colorTable: ColorTableList, cidx: ColorIndexStream, width: number, height: number) {
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         const context: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
         const imgData = context.createImageData(width, height);
         const pixels = imgData.data;
-        // const transparency = 88;
         for (let i = 0, poff = 0; i < cidx.length; i += 1, poff += 4) {
-            /* eslint-disable prefer-destructuring */
-            // if (cidx[i] === 88) {
-            //     console.log('cidx[i]', cidx[i] === 88);
-            // }
-            
-
                 pixels[poff + 0] = colorTable[cidx[i]][0];
                 pixels[poff + 1] = colorTable[cidx[i]][1];
                 pixels[poff + 2] = colorTable[cidx[i]][2];
                 pixels[poff + 3] = (cidx[i] !== 88) ? 255 : 0;
-            /* eslint-enable prefer-destructuring */
         }
         return imgData;
     }

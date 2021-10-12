@@ -3,11 +3,11 @@ import { Stream } from "../stream";
 import { IParse, IData, ParseParam } from '../parse';
 import { getBytes, numberToHex } from '../utils';
 import { BaseExtension } from "./baseExtension";
-import { INetscapeExtension, NetscapeExtension, NetscapeExtensionExportData } from "./netscapeExtension";
-import { IXMPDataExtension, XMPDataExtension, XMPDataExtensionExportData } from "./XMPDataExtension";
-import { IUnknownApplicationExtension, UnknownApplicationExtension, UnknownApplicationExtensionExportData } from "./unknownApplicationExtension";
+import { NetscapeExtension, NetscapeExtensionExportData } from "./netscapeExtension";
+import { XMPDataExtension, XMPDataExtensionExportData } from "./XMPDataExtension";
+import { UnknownApplicationExtension, UnknownApplicationExtensionExportData } from "./unknownApplicationExtension";
 
-export type AppData = UnknownApplicationExtensionExportData | NetscapeExtensionExportData;
+export type AppData = UnknownApplicationExtensionExportData | NetscapeExtensionExportData | XMPDataExtensionExportData;
 
 export interface ApplicationExtensionData {
     introducer: string;
@@ -23,10 +23,10 @@ export type ApplicationExtensionExportData = IData<ApplicationExtensionData>
 export interface IApplicationExtension extends IParse<ApplicationExtensionData> {}
 
 export class ApplicationExtension extends BaseExtension {
-    type: string = 'ApplicationExtension';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+    private type: string = 'ApplicationExtension';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private introducer: string = '';
     private label: string = '';
     private blockSize: number = 0;
@@ -34,9 +34,9 @@ export class ApplicationExtension extends BaseExtension {
     private authenticationCode: string = '';
     private appData: AppData;
 
-    private netscapeExtension: INetscapeExtension;
-    private xmpdataExtension: IXMPDataExtension;
-    private unknownApplicationExtension: IUnknownApplicationExtension;
+    private netscapeExtension: NetscapeExtension;
+    private xmpdataExtension: XMPDataExtension;
+    private unknownApplicationExtension: UnknownApplicationExtension;
 
     constructor(protected stream: Stream) {
         super(stream);

@@ -15,19 +15,14 @@ export interface LogicalScreenDescriptorData {
     backgroundColorIndex: number;
     pixelAspectRatio: number;
 }
-
 export type LogicalScreenDescriptorExportData = IData<LogicalScreenDescriptorData>;
 
-export interface ILogicalScreenDescriptor<LogicalScreenDescriptorData> extends IParse<LogicalScreenDescriptorData> {
-    hasGlobalColorTable(): boolean;
-    getGlobalColorTableSize(): number;
-};
 
-export class LogicalScreenDescriptor implements ILogicalScreenDescriptor<LogicalScreenDescriptorData> {
-    type: string = 'LogicalScreenDescriptor';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+export class LogicalScreenDescriptor {
+    private type: string = 'LogicalScreenDescriptor';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private width: number = 0;
     private height: number = 0;
 

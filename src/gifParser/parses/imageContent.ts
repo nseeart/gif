@@ -11,18 +11,14 @@ export interface LzwData {
     lzwMinimumCodeSize: number;
     blocks: any
 }
-
 export type ImageContentData = Record<string, any>;
-
 export type ImageContentExportData = IData<ImageContentData>
 
-export interface IImageContent extends IParse<ImageContentData> {}
-
-export class ImageContent implements IImageContent {
-    type: string = 'ImageContent';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+export class ImageContent {
+    private type: string = 'ImageContent';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private children: ImageContentData  = {};
 
     constructor(private stream: Stream) {

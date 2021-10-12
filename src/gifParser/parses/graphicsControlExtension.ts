@@ -19,8 +19,6 @@ export interface GraphicsControlExtensionData {
 
 export type GraphicsControlExtensionExportData = IData<GraphicsControlExtensionData>
 
-export interface IGraphicsControlExtension extends IParse<GraphicsControlExtensionData> {}
-
 export class GraphicsControlExtension extends BaseExtension {
     type: string = 'GraphicsControlExtension';
     offset: number = 0;

@@ -173,6 +173,10 @@ export default class GifPlayer {
         this.height = height;
     }
 
+    public getSize(): Array<number> {
+        return [this.width, this.height];
+    }
+
     private setContainerStyle(container: HTMLGifElement): void {
         const width = container.dataset.width || '100%';
         const height = container.dataset.height || 'auto';

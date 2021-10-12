@@ -1,6 +1,6 @@
 
 import { Stream } from "../stream";
-import { IParse, IData } from '../parse';
+import { IData } from '../parse';
 import { getBytes } from '../utils';
 
 export interface HeaderData {
@@ -8,13 +8,12 @@ export interface HeaderData {
     version: string;
 }
 export type HeaderExportData = IData<HeaderData>;
-export interface IHeader extends IParse<HeaderData> {}
 
-export class Header implements IHeader {
-    type: string = 'Header';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+export class Header {
+    private type: string = 'Header';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private signature: string  = '';
     private version: string  = '';
     constructor(private stream: Stream) {
