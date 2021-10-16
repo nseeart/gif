@@ -87,11 +87,10 @@
 import GlobalColorTable from './GlobalColorTable.vue'
 import ByteView from './ByteView.vue'
 import AsyncFrameViewer from './AsyncFrameViewer.vue'
-import FrameLoading from './FrameLoading.vue'
 import XmpDataView from './XmpDataView.vue'
-
 import { defineProps, computed, ComputedRef } from "vue";
-import { ExportBlockList } from "../gifParser/parser";
+import { ExportBlockList } from "@n.see/gif-parser";
+
 const props = defineProps({
     dataList: {
         type: Array,
@@ -115,7 +114,7 @@ defineExpose({ blockList });
 .gif-item {
     background-color: #fff;
     overflow: hidden;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .gif-item header {

@@ -1,4 +1,4 @@
-import { IImageDescriptor } from "./parses/imageDescriptor";
+import { ImageDescriptor } from "./parses/imageDescriptor";
 import { ColorTableExportData } from "./parses/colorTable";
 
 export interface IData<D> {
@@ -13,7 +13,7 @@ export type ParseParam = {
     introducer?: number;
     label?: number;
     size?: number;
-    imageDescriptor? :IImageDescriptor;
+    imageDescriptor? :ImageDescriptor;
 };
 
 

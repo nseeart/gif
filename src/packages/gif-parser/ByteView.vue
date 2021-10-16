@@ -29,7 +29,11 @@
 
 <script setup lang="ts">
 import { computed, ref, Ref, ComputedRef } from "vue";
-import { numberToHex } from "../gifParser/utils";
+
+function numberToHex(n: number): string {
+    const hex = parseInt(`${n}`).toString(16);
+    return (hex.length === 2 ? hex : `0${hex}`).toUpperCase();
+}
 
 const props = defineProps({
     bytes: {

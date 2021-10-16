@@ -7,9 +7,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@wizpanda/super-gif": "0.0.5",
-    "vue": "^3.2.6",
-    "xmp-js": "0.0.5"
+    "@n.see/gif-player": "^1.0.0",
+    "highlight.js": "^11.2.0",
+    "vue": "^3.2.20",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@types/node": "^16.7.10",

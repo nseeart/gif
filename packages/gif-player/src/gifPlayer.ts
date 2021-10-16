@@ -1,5 +1,4 @@
-import { loadGif }  from './gifParser/utils';
-import { Parser } from './gifParser/parser';
+import { Parser, loadGif } from '@n.see/gif-parser';
 
 export interface FrameData {
     delayTime: number;
@@ -115,22 +114,26 @@ export default class GifPlayer {
         this.moveTo(this.currentPlayFrameIndex);
     }
 
+    private error(...args: Array<string>) {
+        return console.log.apply(console, args);
+    }
+
     private getElement(el: string | HTMLGifElement): HTMLGifElement | null {
         if (typeof el === 'string') {
             if (el.startsWith('.')) {
                 if (!document.querySelector(el)) {
-                    console.error(`查找不到 ${el.substr(1, el.length)} class`);
+                    this.error(`查找不到 ${el.substr(1, el.length)} class`);
                     return null;
                 }
                 return document.querySelector(el);
             } else if (el.startsWith('#')) {
                 if (!document.getElementById(el)) {
-                    console.error(`查找不到 ${el.substr(1, el.length)} id`);
+                    this.error(`查找不到 ${el.substr(1, el.length)} id`);
                     return null;
                 }
                 return document.getElementById(el);
             } else {
-                console.error('el string must start with "." or "#"');
+                this.error('el string must start with "." or "#"');
                 return null;
             } 
         } else {
@@ -173,6 +176,25 @@ export default class GifPlayer {
         this.context.putImageData(frameItem.imageData, 0, 0);
     }
 
+    canvasToBlob(canvas: HTMLCanvasElement) {
+        if (!this.container) {
+            return;
+        }
+        let img: HTMLImageElement = this.container.querySelector('img') as HTMLImageElement;
+        if (!img) {
+            img = document.createElement("img");
+            this.container.appendChild(img);
+        }
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            img.onload = function() {
+              // no longer need to read the blob so it's revoked
+              URL.revokeObjectURL(url);
+            };
+            img.src = url;
+        });   
+    }
+
     private renderFrame(frameItem: any): void {
         if (!this.context || !frameItem) {
             return;
@@ -182,6 +204,7 @@ export default class GifPlayer {
         tempCanvas.height = frameItem.height;
         const tempContext: CanvasRenderingContext2D = tempCanvas.getContext('2d') as CanvasRenderingContext2D;
         tempContext.putImageData(frameItem.imageData, 0, 0);
+        this.context.globalCompositeOperation = "source-over";
         this.context.drawImage(tempCanvas,
             0, 0, frameItem.width, frameItem.height,
             frameItem.left, frameItem.top,
