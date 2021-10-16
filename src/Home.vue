@@ -5,16 +5,25 @@
             data-src="/src/assets/03.gif"
             data-width="500"
         ></div>
-        <code-view width="500px">{{ code }}</code-view>
+        <code-view width="500px" height="auto">{{ code }}</code-view>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import GifPlayer from '@n.see/gif-player';
 import CodeView from "./components/CodeView.vue";
 
-const code = `import { onMounted } from 'vue';
+const code = `
+// template
+<div
+    class="git-player"
+    data-src="/src/assets/03.gif"
+    data-width="500"
+></div>
+
+// script
+import { onMounted } from 'vue';
 import GifPlayer from '@n.see/gif-player';
 
 onMounted(() => {

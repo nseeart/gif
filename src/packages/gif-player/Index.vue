@@ -129,6 +129,7 @@ defineExpose({
 .gif-player {
     max-width: 600px;
     margin: 0 auto;
+    padding-bottom: 20px;
 }
 .gif-player h3 {
     line-height: 60px;
