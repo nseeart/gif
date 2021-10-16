@@ -129,6 +129,7 @@ defineExpose({
 .gif-player-vue-next {
     max-width: 600px;
     margin: 0 auto;
+    padding-bottom: 20px;
 }
 .gif-player-vue-next h3 {
     line-height: 60px;
