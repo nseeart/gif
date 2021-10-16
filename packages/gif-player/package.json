@@ -1,0 +1,40 @@
+{
+    "name": "@n.see/gif-player",
+    "files": [
+        "dist"
+    ],
+    "version": "1.0.0",
+    "description": "gif-player",
+    "main": "./dist/gif-player.umd.js",
+    "module": "./dist/gif-player.es.js",
+    "types": "./dist/types/src/gifPlayer.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/gif-player.es.js",
+            "require": "./dist/gif-player.umd.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview",
+        "release": "npm publish --access=public"
+    },
+    "keywords": [
+        "gif",
+        "gif-player",
+        "player",
+        "js",
+        "es6",
+        "typecript"
+    ],
+    "author": "n.see",
+    "license": "ISC",
+    "dependencies": {
+        "@n.see/gif-parser": "^1.0.3"
+    },
+    "devDependencies": {
+        "vite": "^2.5.2",
+        "vite-plugin-dts": "^0.8.3"
+    }
+}

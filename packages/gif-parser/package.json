@@ -1,0 +1,37 @@
+{
+  "name": "@n.see/gif-parser",
+  "files": [
+    "dist"
+  ],
+  "version": "1.0.3",
+  "description": "gif-parser",
+  "main": "./dist/gif-parser.umd.js",
+  "module": "./dist/gif-parser.es.js",
+  "types": "./dist/types/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/gif-parser.es.js",
+      "require": "./dist/gif-parser.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "release": "npm publish --access=public"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2",
+    "vite": "^2.5.2",
+    "vite-plugin-dts": "^0.8.3"
+  },
+  "keywords": [
+    "gif",
+    "parser",
+    "ts",
+    "es6",
+    "typescript"
+  ],
+  "author": "n.see",
+  "license": "ISC"
+}
