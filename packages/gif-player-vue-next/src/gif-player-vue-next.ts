@@ -22,9 +22,6 @@ export default defineComponent({
     setup(props, { emit }) {
         const gifPlayerRef = ref();
         onMounted(() => {
-            gifPlayerRef.value.setAttribute('data-src', props.src);
-            gifPlayerRef.value.setAttribute('data-width', props.width);
-            gifPlayerRef.value.setAttribute('data-height', props.height);
             const gifPlayer = new GifPlayer(gifPlayerRef.value);
             gifPlayer.ready((parser) => {
                 emit('ready', parser);
@@ -37,7 +34,10 @@ export default defineComponent({
 
         return () => h('div', {
             class: "gif-player",
-            ref: gifPlayerRef.value
+            ref: gifPlayerRef,
+            'data-src': props.src,
+            'data-width': props.width,
+            'data-height': props.height
         });
     }
 });
