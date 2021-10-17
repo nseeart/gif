@@ -3,7 +3,7 @@
     "files": [
         "dist"
     ],
-    "version": "1.0.5",
+    "version": "1.0.7",
     "description": "gif-player-vue-next",
     "main": "./dist/gif-player-vue-next.umd.js",
     "module": "./dist/gif-player-vue-next.es.js",

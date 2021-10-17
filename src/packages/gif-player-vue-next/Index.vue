@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import GifPlayer from '@n.see/gif-player-vue-next';
+// import GifPlayer from '../../../packages/gif-player-vue-next/src/gif-player-vue-next'; // dev
 import { Parser, FrameData } from '@n.see/gif-parser';
 import CodeView from "../../components/CodeView.vue";
 
