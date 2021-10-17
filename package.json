@@ -7,7 +7,9 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@n.see/gif-parser": "^1.0.3",
     "@n.see/gif-player": "^1.0.0",
+    "@n.see/gif-player-vue-next": "^1.0.5",
     "highlight.js": "^11.2.0",
     "vue": "^3.2.20",
     "vue-router": "^4.0.12"

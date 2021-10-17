@@ -20,14 +20,17 @@ export interface FrameData {
     colorTable?: Array<Array<number>>;
     indexStream?: Array<number>;
     localColorTableFlag?: boolean;
+    offset?: number;
+    length?: number;
 };
 
 export type FrameExportData = {
     type: string;
     data: FrameData
 };
-export type ExportData = HeaderExportData | LogicalScreenDescriptorExportData | ColorTableExportData | ExtensionExportData | ImageDescriptorExportData | ImageContentExportData | FrameExportData ;
-export type ExportBlockList = Array<ExportData>;
+export type ExportBlockItem = HeaderExportData | LogicalScreenDescriptorExportData | ColorTableExportData | ExtensionExportData | ImageDescriptorExportData | ImageContentExportData | FrameExportData ;
+export type ExportBlockList = Array<ExportBlockItem>;
+export type ExportBlockItemType = 'Header' | 'LogicalScreenDescriptor' | 'GlobalColorTable' | 'LocalColorTable' | 'ImageDescriptor' | 'ImageContent';
 export type ColorTable = Array<Array<number>>;
 export type IndexStream = Array<number>;
 export type FramesData = Array<FrameData>;
@@ -56,7 +59,7 @@ export class Parser {
         this.parse();
     }
 
-    parse(): void {
+    private parse(): void {
         if (this.parsed) {
             return;
         }
@@ -89,7 +92,7 @@ export class Parser {
         this.isExport = true;
     }
 
-    exportWarn(): Array<any> {
+    private exportWarn(): Array<any> {
         console.warn(`parser.export()`);
         return [];
     }
@@ -105,7 +108,7 @@ export class Parser {
         return this.dataList;
     }
 
-    createImageData({colorTable, indexStream, width, height, transparency}: Record<string, any>): ImageData {
+    private createImageData({colorTable, indexStream, width, height, transparency}: Record<string, any>): ImageData {
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
@@ -128,7 +131,7 @@ export class Parser {
         return imageData;
     }
 
-    dataHandler(): void {
+    private dataHandler(): void {
         let frameData: Record<string, any> = {};
         const globalColorTable = this.blockList.find(item => item.type === 'GlobalColorTable');
         this.blockList.forEach((item) => {
@@ -168,7 +171,7 @@ export class Parser {
         });
     }
 
-    getFrames(): any {
+    getFrames(): FrameData | Array<any> {
         if (!this.isExport) {
             return this.exportWarn();
         }
@@ -182,8 +185,8 @@ export class Parser {
             });
     }
 
-    getData(type: string): ExportData  {
+    getBlockItem(type: ExportBlockItemType): ExportBlockItem  {
         const currentItem = this.blockList.find(item => item.type === type);
-        return (currentItem && currentItem.data) as ExportData;
+        return (currentItem && currentItem.data) as ExportBlockItem;
     }
 }

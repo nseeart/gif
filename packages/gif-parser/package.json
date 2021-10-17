@@ -3,7 +3,7 @@
   "files": [
     "dist"
   ],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "gif-parser",
   "main": "./dist/gif-parser.umd.js",
   "module": "./dist/gif-parser.es.js",
