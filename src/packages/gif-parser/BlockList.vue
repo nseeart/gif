@@ -1,6 +1,7 @@
 <template>
     <div class="gif-list">
             <div 
+                v-if="blockList && blockList.length"
                 v-for="(item, index) in blockList"
                 class="gif-item"
                 :class="item.type">
@@ -58,22 +59,12 @@
                     <section class="frame-viewer-wrap"
                         v-if="item.type === 'Frame' &&  item.data.imageData"
                     >
-                        <suspense>
-                            <template #default>
-                                <async-frame-viewer
-                                    :width="item.data.width"
-                                    :height="item.data.height"
-                                    :image-data="item.data.imageData"
-                                    :index="index"
-                                />
-                            </template>
-                            <template #fallback>
-                                <frame-loading
-                                    :width="item.data.width"
-                                    :height="item.data.height"
-                                />
-                            </template>
-                        </suspense>
+                        <frame-viewer
+                            :width="item.data.width"
+                            :height="item.data.height"
+                            :image-data="item.data.imageData"
+                            :index="index"
+                        />
                     </section>
                 </section>
                 <section v-if="item.bytes">
@@ -86,7 +77,7 @@
 <script setup lang="ts">
 import GlobalColorTable from './GlobalColorTable.vue'
 import ByteView from './ByteView.vue'
-import AsyncFrameViewer from './AsyncFrameViewer.vue'
+import FrameViewer from './FrameViewer.vue'
 import XmpDataView from './XmpDataView.vue'
 import { defineProps, computed, ComputedRef } from "vue";
 import { ExportBlockList } from "@n.see/gif-parser";

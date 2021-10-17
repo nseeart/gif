@@ -2,127 +2,93 @@
     <div class="gif-player-vue-next">
         <h3>gif-player-vue-next</h3>
         <div class="gif-img">
-            <div
-                class="git-player"
-                data-src="/src/assets/03.gif"
-                data-width="300"
-            ></div>
-            <!-- <div
-                class="git-player"
-                data-src="/src/assets/logo.gif"
-                data-width="300"
-            ></div> -->
+            <gif-player
+                src="/src/assets/03.gif"
+                width="400"
+                height="auto"
+                @ready="handleReady"
+                @state-update="handleStateUpdate"
+                @frame-update="handleFrameUpdate"
+            />
         </div>
-        <gif-player-tool
-            :frames="gifFrames"
-            :current-frame-index="currentFrameIndex"
-            :is-play="isPlay"
-            @toggle="handleToggle"
-            @step="handleStep"
-        />
+        <div class="gif-img">
+            <gif-player
+                src="/src/assets/01.gif"
+                width="400"
+                height="auto"
+            />
+        </div>
         <code-view width="100%" height="auto">{{ code }}</code-view>
     </div>
 </template>
 
 
 <script setup lang="ts">
-import { onMounted, ref, Ref } from 'vue';
-import GifPlayer from '@n.see/gif-player';
-import GifPlayerTool from './GifPlayerTool.vue'
+import GifPlayer from '@n.see/gif-player-vue-next';
+import { Parser, FrameData } from '@n.see/gif-parser';
 import CodeView from "../../components/CodeView.vue";
-
-const currentFrameIndex: Ref<number> = ref(0);
-const gifFrames: Ref<Array<any>> = ref([]);
-const width: Ref<number> = ref(0);
-const height: Ref<number> = ref(0);
-const isPlay: Ref<boolean> = ref(false);
-let gifPlayer: GifPlayer;
 
 const code = `
 // template
-<div class="gif-view">
-    <div
-        class="git-player"
-        data-src="/src/assets/03.gif"
-        data-width="300"
-    ></div>
-    <gif-player-vue-next-tool
-        :frames="gifFrames"
-        :current-frame-index="currentFrameIndex"
-        :is-play="isPlay"
-        @toggle="handleToggle"
-        @step="handleStep"
+<div class="gif-img">
+    <gif-player
+        src="/src/assets/03.gif"
+        width="400"
+        height="auto"
+        @ready="handleReady"
+        @state-update="handleStateUpdate"
+        @frame-update="handleFrameUpdate"
+    />
+</div>
+<div class="gif-img">
+    <gif-player
+        src="/src/assets/01.gif"
+        width="400"
+        height="auto"
     />
 </div>
 
-// script
+// script setup
+import { defineExpose } from 'vue';
 import GifPlayer from '@n.see/gif-player-vue-next';
-import GifPlayerTool from './GifPlayerTool.vue'
+import { Parser, FrameData } from '@n.see/gif-parser';
 
-onMounted(() => {
-    gifPlayer = GifPlayer.run('.git-player');
-    gifPlayer.ready((parser) => {
-        const [w, h] = parser.getSize();
-        width.value = w;
-        height.value = h;
-        parser.export();
-        gifFrames.value = parser.getFrames();
-    }).frameUpdate((item, index) => {
-        currentFrameIndex.value = index;
-        // console.log(item, index);
-    }).stateUpdate((state) => {
-        isPlay.value = state.isPlay;
-    });
+const handleReady = (parser: Parser) => {
+    console.log('parser', parser);
+};
 
-
-    // GifPlayer.run('.git-player');
-    // 多个gif
-    // GifPlayer.selectorAll('.git-player').forEach(gif => {
-    //     GifPlayer.run(gif);
-    // });
-});
-`;
-
-onMounted(() => {
-    gifPlayer = GifPlayer.run('.git-player');
-    gifPlayer.ready((parser) => {
-        const [w, h] = parser.getSize();
-        width.value = w;
-        height.value = h;
-        parser.export();
-        gifFrames.value = parser.getFrames();
-    }).frameUpdate((item, index) => {
-        currentFrameIndex.value = index;
-        // console.log(item, index);
-    }).stateUpdate((state) => {
-        isPlay.value = state.isPlay;
-    });
-
-
-    // GifPlayer.run('.git-player');
-    // 多个gif
-    // GifPlayer.selectorAll('.git-player').forEach(gif => {
-    //     GifPlayer.run(gif);
-    // });
-});
-
-const handleStep = (type: 'prev' | 'next') => {
-    gifPlayer.step(type);
+const handleStateUpdate = (state: { isPlayer: boolean}) => {
+    console.log('handleStateUpdate', state.isPlayer);
 }
 
-const handleToggle = () => {
-    gifPlayer.handleToggle();
+const handleFrameUpdate = (item: FrameData, index: number) => {
+    console.log('handleFrameUpdate', item, index);
 }
 
 defineExpose({
-    width,
-    height,
-    gifFrames,
-    currentFrameIndex,
-    isPlay,
-    handleToggle,
-    handleStep
-})
+    handleReady,
+    handleStateUpdate,
+    handleFrameUpdate
+});
+`;
+
+const handleReady = (parser: Parser) => {
+    console.log('parser', parser);
+};
+
+const handleStateUpdate = (state: { isPlay: boolean}) => {
+    console.log('handleStateUpdate', state.isPlay);
+}
+
+const handleFrameUpdate = (item: FrameData, index: number) => {
+    console.log('handleFrameUpdate', item, index);
+}
+
+defineExpose({
+    handleReady,
+    handleStateUpdate,
+    handleFrameUpdate
+});
 </script>
 
 <style>

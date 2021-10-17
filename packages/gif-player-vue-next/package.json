@@ -1,0 +1,44 @@
+{
+    "name": "@n.see/gif-player-vue-next",
+    "files": [
+        "dist"
+    ],
+    "version": "1.0.5",
+    "description": "gif-player-vue-next",
+    "main": "./dist/gif-player-vue-next.umd.js",
+    "module": "./dist/gif-player-vue-next.es.js",
+    "types": "./dist/types/src/gif-player-vue-next.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/gif-player-vue-next.es.js",
+            "require": "./dist/gif-player-vue-next.umd.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview",
+        "release": "npm publish --access=public"
+    },
+    "keywords": [
+        "gif",
+        "gif-player",
+        "player",
+        "js",
+        "es6",
+        "typecript",
+        "vue",
+        "vue3"
+    ],
+    "author": "n.see",
+    "license": "ISC",
+    "dependencies": {
+        "@n.see/gif-player": "^1.0.2",
+        "vue": "^3.2.20"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^1.9.3",
+        "vite": "^2.5.2",
+        "vite-plugin-dts": "^0.8.3"
+    }
+}

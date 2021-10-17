@@ -20,6 +20,8 @@ export interface FrameData {
     colorTable?: Array<Array<number>>;
     indexStream?: Array<number>;
     localColorTableFlag?: boolean;
+    offset?: number;
+    length?: number;
 };
 
 export type FrameExportData = {
