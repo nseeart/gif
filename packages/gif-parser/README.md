@@ -7,7 +7,7 @@
 
 ![gif文件流](./assets/gif.drawio.png "gif文件流")
 
-[文件流说明](./doc/gif-file)
+[文件流说明](./doc/gif-file.md)
 
 
 
