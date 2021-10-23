@@ -1,15 +1,15 @@
 import { Stream } from "../stream";
-import { byteToBitArr, bitsToNum, getBytes } from "../utils";
-import { IParse, IData } from '../parse';
+import { byteToBitArr, bitsToNum, getBytes, byteToBits, bitsToNumber } from "../utils";
+import { IData } from '../parse';
 
 export interface LogicalScreenDescriptorData {
     width: number;
     height: number;
     // 填充字段
     // public packedField: Record<string, any> = {};
-    globalColorTableFlag: boolean;
+    globalColorTableFlag: number;
     colorResolution: number;
-    sortFlag: boolean | undefined;
+    sortFlag: number;
     globalColorTableSize: number;
 
     backgroundColorIndex: number;
@@ -28,9 +28,9 @@ export class LogicalScreenDescriptor {
 
     // 填充字段
     // public packedField: Record<string, any> = {};
-    private globalColorTableFlag: boolean = false;
+    private globalColorTableFlag: number = 0;
     private colorResolution: number = 0;
-    private sortFlag: boolean | undefined = false;
+    private sortFlag: number = 0;
     private globalColorTableSize: number = 0;
 
     private backgroundColorIndex: number = 0;
@@ -45,15 +45,17 @@ export class LogicalScreenDescriptor {
         this.height = this.stream.readUint16();
 
         const packedFields = this.stream.readUint8();
+        console.log('packedFields===', packedFields);
         this.handlerPackedField(packedFields);
 
         this.backgroundColorIndex = this.stream.readUint8();
         this.pixelAspectRatio = this.stream.readInt8();
         this.length = this.stream.getOffset() - this.offset;
+        console.log('this', this);
     }
 
     hasGlobalColorTable(): boolean {
-        return this.globalColorTableFlag;
+        return !!this.globalColorTableFlag;
     }
 
     getGlobalColorTableSize() {
@@ -80,14 +82,14 @@ export class LogicalScreenDescriptor {
     }
 
     handlerPackedField(rb: number): void {
-        const bits: Array<boolean> = byteToBitArr(rb);
+        const bits: Array<number> = byteToBits(rb);
         // 1 - 全局颜色表标志
-        this.globalColorTableFlag = bits.shift() || false;
+        this.globalColorTableFlag = bits.shift() || 0;
         // 3 - 颜色分辨率
-        this.colorResolution = bitsToNum(bits.splice(0, 3));
+        this.colorResolution = bitsToNumber(bits.splice(0, 3)) + 1;
         // 5 - 排序标志
-        this.sortFlag = bits.shift();
+        this.sortFlag = bits.shift() || 0;
         // 7 - 全局颜色表的大小
-        this.globalColorTableSize = bitsToNum(bits.splice(0, 3));
+        this.globalColorTableSize = bitsToNumber(bits.splice(0, 3));
     }
 }

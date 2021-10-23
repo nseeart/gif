@@ -6,12 +6,20 @@ export function bitsToNum(ba: Array<boolean>): number {
     }, 0);
 }
 
+export function bitsToNumber(ba: Array<number>): number {
+    return ba.reduce((s, n) => s * 2 + n, 0);
+}
+
 export function byteToBitArr(bite: number): Array<boolean> {
     let a = [];
     for (let i = 7; i >= 0; i--) {
         a.push(!!(bite & (1 << i)));
     }
     return a;
+};
+
+export function byteToBits(bite: number): Array<number> {
+    return bite.toString(2).split('').map(n => Number(n));
 };
 
 export function loadGif(url: string) {

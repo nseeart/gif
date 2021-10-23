@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import { onMounted, Ref, ref } from 'vue';
-import { Parser } from '@n.see/gif-parser';
+// import { Parser } from '@n.see/gif-parser';
+import { Parser } from '../../../packages/gif-parser/src/index';
 import CodeView from "../../components/CodeView.vue";
 import BlockList from './BlockList.vue';
 
