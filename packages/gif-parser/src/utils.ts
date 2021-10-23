@@ -19,7 +19,11 @@ export function byteToBitArr(bite: number): Array<boolean> {
 };
 
 export function byteToBits(bite: number): Array<number> {
-    return bite.toString(2).split('').map(n => Number(n));
+    let a = [];
+    for (let i = 7; i >= 0; i--) {
+        a.push(!!(bite & (1 << i)));
+    }
+    return a.map(n => Number(n));
 };
 
 export function loadGif(url: string) {

@@ -1,7 +1,7 @@
 
 import { Stream } from '../stream';
 import { IParse, IData, ParseParam } from '../parse';
-import { bitsToNum, byteToBitArr, getBytes } from '../utils';
+import { bitsToNum, byteToBitArr, getBytes, byteToBits, bitsToNumber } from '../utils';
 
 export type ImageDescriptorData = {
     introducer: string;
@@ -9,10 +9,11 @@ export type ImageDescriptorData = {
     top: number;
     width: number;
     height: number;
-    localColorTableFlag: boolean;
-    interlaceFlag: boolean;
-    sortFlag: boolean;
-    reserved: Array<boolean>;
+    packedFields: Array<number>;
+    localColorTableFlag: number;
+    interlaceFlag: number;
+    sortFlag: number;
+    reserved: Array<number>;
     localColorTableSize: number;
 }
 export type ImageDescriptorExportData = IData<ImageDescriptorData>
@@ -27,10 +28,12 @@ export class ImageDescriptor {
     private top: number = 0;
     private width: number = 0;
     private height: number = 0;
-    private localColorTableFlag: boolean = false;
-    private interlaceFlag: boolean = false;
-    private sortFlag: boolean = false;
-    private reserved: Array<boolean> = [];
+    
+    private packedFields: Array<number> = [];
+    private localColorTableFlag: number = 0;
+    private interlaceFlag: number = 0;
+    private sortFlag: number = 0;
+    private reserved: Array<number> = [];
     private localColorTableSize: number = 0;
 
     constructor(private stream: Stream) {
@@ -38,7 +41,7 @@ export class ImageDescriptor {
     }
 
     hasLocalColorTable(): boolean {
-        return this.localColorTableFlag;
+        return !!this.localColorTableFlag;
     }
 
     getLocalColorTableSize(): number {
@@ -53,14 +56,14 @@ export class ImageDescriptor {
         this.width = this.stream.readUint16();
         this.height = this.stream.readUint16();
 
-        const packed = this.stream.readUint8();
-        let bits = byteToBitArr(packed);
+        this.packedFields = byteToBits(this.stream.readUint8());
+        const bits = [...this.packedFields];
 
-        this.localColorTableFlag = bits.shift() || false;
-        this.interlaceFlag = bits.shift() || false;
-        this.sortFlag = bits.shift() || false;
+        this.localColorTableFlag = bits.shift() || 0;
+        this.interlaceFlag = bits.shift() || 0;
+        this.sortFlag = bits.shift() || 0;
         this.reserved = bits.splice(0, 2);
-        this.localColorTableSize = bitsToNum(bits.splice(0, 3));
+        this.localColorTableSize = bitsToNumber(bits.splice(0, 3));
         this.length = this.stream.getOffset() - this.offset;
     }
 
@@ -76,6 +79,7 @@ export class ImageDescriptor {
                 top: this.top,
                 width: this.width,
                 height: this.height,
+                packedFields: this.packedFields,
                 localColorTableFlag: this.localColorTableFlag,
                 interlaceFlag: this.interlaceFlag,
                 sortFlag: this.sortFlag,

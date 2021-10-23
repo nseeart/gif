@@ -1,17 +1,18 @@
 
 import { Stream } from "../stream";
-import { IParse, IData, ParseParam } from '../parse';
-import { byteToBitArr, bitsToNum, getBytes, numberToHex } from '../utils';
+import { IData, ParseParam } from '../parse';
+import { byteToBits, getBytes, numberToHex, bitsToNumber } from '../utils';
 import { BaseExtension } from "./baseExtension";
 
 export interface GraphicsControlExtensionData {
     introducer: string;
     label: string;
     blockSize: number;
-    reserved: Array<boolean>;
+    packedFields: Array<number>;
+    reserved: Array<number>;
     disposalMethod: number;
-    userInputFlag: boolean;
-    transparentColorFlag: boolean;
+    userInputFlag: number;
+    transparentColorFlag: number;
     delayTime: number;
     transparentColorIndex: number;
     blockTerminator: string;
@@ -20,17 +21,18 @@ export interface GraphicsControlExtensionData {
 export type GraphicsControlExtensionExportData = IData<GraphicsControlExtensionData>
 
 export class GraphicsControlExtension extends BaseExtension {
-    type: string = 'GraphicsControlExtension';
-    offset: number = 0;
-    length: number = 0;
-    bytes: Uint8Array = new Uint8Array(0);
+    private type: string = 'GraphicsControlExtension';
+    private offset: number = 0;
+    private length: number = 0;
+    private bytes: Uint8Array = new Uint8Array(0);
     private introducer: string = '';
     private label: string = '';
     private blockSize: number = 0;
-    private reserved: Array<boolean> = [];
+    private packedFields: Array<number> = [];
+    private reserved: Array<number> = [];
     private disposalMethod: number = 0;
-    private userInputFlag: boolean = false;
-    private transparentColorFlag: boolean = false;
+    private userInputFlag: number = 0;
+    private transparentColorFlag: number = 0;
     private delayTime: number = 0;
     private transparentColorIndex: number = 0;
     private blockTerminator: string = '';
@@ -45,11 +47,12 @@ export class GraphicsControlExtension extends BaseExtension {
         this.label = numberToHex(label);
 
         this.blockSize = this.stream.readUint8(); // Always 4
-        let bits = byteToBitArr(this.stream.readUint8());
-        this.reserved = bits.splice(0, 3); // Reserved; should be 000.
-        this.disposalMethod = bitsToNum(bits.splice(0, 3));
-        this.userInputFlag = bits.shift() || false;
-        this.transparentColorFlag = bits.shift() || false;
+        this.packedFields = byteToBits(this.stream.readUint8());
+        const bits = [...this.packedFields];
+        this.reserved = bits.splice(0, 3); // 预留
+        this.disposalMethod = bitsToNumber(bits.splice(0, 3));
+        this.userInputFlag = bits.shift() || 0;
+        this.transparentColorFlag = bits.shift() || 0;
 
         this.delayTime = this.stream.readUint8();
         this.stream.seek(1);
@@ -68,6 +71,7 @@ export class GraphicsControlExtension extends BaseExtension {
                 introducer: this.introducer,
                 label: this.label,
                 blockSize: this.blockSize,
+                packedFields: this.packedFields,
                 reserved: this.reserved,
                 disposalMethod: this.disposalMethod,
                 userInputFlag: this.userInputFlag,
