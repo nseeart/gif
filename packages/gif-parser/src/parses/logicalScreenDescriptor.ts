@@ -57,7 +57,7 @@ export class LogicalScreenDescriptor {
     }
 
     getGlobalColorTableSize() {
-        return 1 << (this.globalColorTableSize + 1);
+        return this.globalColorTableSize;
     }
 
     export(): LogicalScreenDescriptorExportData {

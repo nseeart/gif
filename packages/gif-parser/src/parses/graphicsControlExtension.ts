@@ -54,8 +54,7 @@ export class GraphicsControlExtension extends BaseExtension {
         this.userInputFlag = bits.shift() || 0;
         this.transparentColorFlag = bits.shift() || 0;
 
-        this.delayTime = this.stream.readUint8();
-        this.stream.seek(1);
+        this.delayTime = this.stream.readUint16();
         this.transparentColorIndex = this.stream.readUint8();
         this.blockTerminator = this.stream.readString(1);
         this.length = this.stream.getOffset() - this.offset;

@@ -1,6 +1,6 @@
 
 import { Stream } from '../stream';
-import { IParse, IData, ParseParam } from '../parse';
+import { IData } from '../parse';
 import { getBytes } from '../utils';
 import { BitReader } from '../bitReader';
 

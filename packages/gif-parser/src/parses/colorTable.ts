@@ -19,8 +19,9 @@ export class ColorTable {
     }
 
     parse({ size = 0 }: ParseParam) {
+        const globalColorTableSize = 1 << (size + 1);
         this.offset = this.stream.getOffset();
-        for (let i = 0; i < size; i++) {
+        for (let i = 0; i < globalColorTableSize; i++) {
             this.colors.push(this.stream.readUint8Array(3));
         }
         this.length = this.stream.getOffset() - this.offset;

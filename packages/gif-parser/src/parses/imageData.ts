@@ -33,10 +33,8 @@ export class ImageData implements IImageData {
     parse({ introducer }: ParseParam) {
         this.imageDescriptor.parse({ introducer });
         if (this.imageDescriptor.hasLocalColorTable()) {
-            // debugger;
             const localColorTableSize = this.imageDescriptor.getLocalColorTableSize();
-            const size = 1 << (localColorTableSize + 1);
-            this.localColorTable.parse({ size });
+            this.localColorTable.parse({ size: localColorTableSize });
         }
         this.imageContent.parse();
     }
