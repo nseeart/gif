@@ -27,7 +27,7 @@ onMounted(() => {
             const parser = new Parser(arrayBuffer);
             console.log('parser', parser);
             // 导出数据
-            parser.export();
+            // parser.export();
             // gif高宽
             const [width, height] = parser.getSize();
             console.log('width', width);

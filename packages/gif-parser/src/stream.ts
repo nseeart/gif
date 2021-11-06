@@ -7,7 +7,6 @@ export class Stream {
     constructor(private arrayBuffer: ArrayBuffer, private littleEndian?: boolean) {
         this.dataView = new DataView(arrayBuffer);
         this.littleEndian = littleEndian || false;
-        console.log('this.dataView', this.dataView);
     }
 
     check(size: number): boolean {

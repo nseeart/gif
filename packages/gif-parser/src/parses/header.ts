@@ -25,6 +25,7 @@ export class Header {
         this.signature = this.stream.readString(3); 
         this.version = this.stream.readString(3);
         this.length = this.stream.getOffset() - this.offset;
+        console.log('this.signature', this.signature);
         if (this.signature !== 'GIF') throw new Error('Not a GIF file.'); 
     }
 

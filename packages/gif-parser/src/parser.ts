@@ -93,7 +93,7 @@ export class Parser {
     }
 
     private exportWarn(): Array<any> {
-        console.warn(`parser.export()`);
+        console.warn.call(this, `parser.export()`);
         return [];
     }
 
@@ -171,7 +171,7 @@ export class Parser {
         });
     }
 
-    getFrames(): FrameData | Array<any> {
+    getFrames(): FramesData {
         if (!this.isExport) {
             return this.exportWarn();
         }
