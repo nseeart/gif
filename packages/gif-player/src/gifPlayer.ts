@@ -1,14 +1,4 @@
-import { Parser, loadGif } from '@n.see/gif-parser';
-
-export interface FrameData {
-    delayTime: number;
-    localColorTableFlag: boolean;
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-    imageData: ImageData;
-};
+import { Parser, loadGif, FramesData, FrameData } from '@n.see/gif-parser';
 
 export type HTMLGifElement = HTMLDivElement | HTMLElement;
 export type ReadyCallback = (parser: Parser) => void;
@@ -27,7 +17,7 @@ export default class GifPlayer {
     private context: CanvasRenderingContext2D | null;
     private isPlay: boolean = false;
     private currentPlayFrameIndex: number = 0;
-    private frames: Array<FrameData> = [];
+    private frames: FramesData = [];
     private frameAction: any = [];
     private isHover: boolean = false;
     private isPlayButtonDisplay: boolean = true;
@@ -61,7 +51,7 @@ export default class GifPlayer {
             this.setSize(width, height);
             this.setCanvasStyle(this.canvas, width, height);
             parser.export();
-            this.frames = parser.getFrames();
+            this.frames = parser.getFrames() as FramesData;
             this.initFrame(this.frames[0]);
             this.frameAction = this.createFrameAction(this.frames);
             this.readyCallback && this.readyCallback(parser);
@@ -141,8 +131,8 @@ export default class GifPlayer {
         }
     }
 
-    private createFrameAction(frames: Array<FrameData>): Array<(play: () => void) => void> {
-        return (frames as Array<FrameData>).map(item => {
+    private createFrameAction(frames: FramesData): Array<(play: () => void) => void> {
+        return (frames as FramesData).map(item => {
             return (play: () => void) => {
                 const timer = setTimeout(() => {
                     this.renderFrame(item);
