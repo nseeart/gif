@@ -8,8 +8,8 @@
     },
     "dependencies": {
         "@n.see/gif-parser": "workspace:^1.1.0",
-        "@n.see/gif-player": "workspace:^1.1.0",
-        "@n.see/gif-player-vue-next": "workspace:^1.1.0",
+        "@n.see/gif-player": "^1.1.0",
+        "@n.see/gif-player-vue-next": "^1.1.0",
         "highlight.js": "^11.6.0",
         "vue": "^3.2.41",
         "vue-router": "^4.1.6"
