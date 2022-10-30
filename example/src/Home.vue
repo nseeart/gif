@@ -9,10 +9,10 @@
     </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { onMounted } from 'vue';
 import GifPlayer from '@n.see/gif-player';
-import CodeView from "./components/CodeView.vue";
+import CodeView from './components/CodeView.vue';
 
 const code = `
 // template

@@ -3,7 +3,7 @@
     "files": [
         "dist"
     ],
-    "version": "1.0.8",
+    "version": "1.1.0",
     "description": "gif-player-vue-next",
     "main": "./dist/gif-player-vue-next.umd.js",
     "module": "./dist/gif-player-vue-next.es.js",
@@ -33,12 +33,7 @@
     "author": "n.see",
     "license": "ISC",
     "dependencies": {
-        "@n.see/gif-player": "^1.0.3",
+        "@n.see/gif-player": "workspace:*",
         "vue": "^3.2.20"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^1.9.3",
-        "vite": "^2.5.2",
-        "vite-plugin-dts": "^0.8.3"
     }
 }

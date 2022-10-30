@@ -9,12 +9,11 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
 import { onMounted, Ref, ref } from 'vue';
 // import { Parser } from '@n.see/gif-parser';
-import { Parser } from '../../../packages/gif-parser/src/index';
-import CodeView from "../../components/CodeView.vue";
+import { Parser } from '@n.see/gif-parser';
+import CodeView from '../../components/CodeView.vue';
 import BlockList from './BlockList.vue';
 
 const dataList: Ref<Array<any>> = ref([]);
@@ -22,7 +21,7 @@ const dataList: Ref<Array<any>> = ref([]);
 onMounted(() => {
     fetch('/src/assets/03.gif')
         .then((resp) => resp.arrayBuffer())
-        .then(arrayBuffer => {
+        .then((arrayBuffer) => {
             // 解析gif文件流
             const parser = new Parser(arrayBuffer);
             console.log('parser', parser);
@@ -60,11 +59,9 @@ onMounted(() => {
         });
 });
 `;
-
 </script>
 
 <style>
-
 .gif-img {
     background-color: #f9f9f9;
     width: 100%;
@@ -85,5 +82,4 @@ onMounted(() => {
     line-height: 60px;
     text-align: center;
 }
-
 </style>

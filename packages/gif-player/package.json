@@ -3,7 +3,7 @@
     "files": [
         "dist"
     ],
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "gif-player",
     "main": "./dist/gif-player.umd.js",
     "module": "./dist/gif-player.es.js",
@@ -31,10 +31,6 @@
     "author": "n.see",
     "license": "ISC",
     "dependencies": {
-        "@n.see/gif-parser": "^1.0.7"
-    },
-    "devDependencies": {
-        "vite": "^2.6.13",
-        "vite-plugin-dts": "^0.8.3"
+        "@n.see/gif-parser": "workspace:*"
     }
 }
